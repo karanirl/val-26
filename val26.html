@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorry Simmi 💖</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffb6c1);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.3em;
+      color: #fff0f5;
+      text-shadow: 2px 2px 5px rgba(255, 0, 100, 0.5);
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #fff8f8;
+      max-width: 600px;
+      margin: 0 auto 1.5em;
+    }
+
+    button {
+      background-color: #ff4b6e;
+      border: none;
+      color: white;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-size: 1.1em;
+      cursor: pointer;
+      box-shadow: 0 5px 10px rgba(255, 0, 100, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background-color: #ff2e63;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      transform: rotate(45deg);
+      animation: float 5s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+      100% { transform: translateY(-800px) rotate(45deg); opacity: 0; }
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9em;
+      color: #fff8f8;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2em; }
+      p { font-size: 1em; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti"></canvas>
+
+  <h1>Hey Simmi 💕</h1>
+  <p>
+    I messed up, I know.  
+    But you deserve smiles, sparkles, and a little magic.  
+    So… here’s my digital way of saying <b>I’m really sorry 💌</b>
+  </p>
+  <button id="confettiButton">Forgive me?</button>
+
+  <div class="footer">Made with ❤️ just for you</div>
+
+  <script>
+    // Confetti effect
+    const confettiButton = document.getElementById('confettiButton');
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let confettis = [];
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function randomColor() {
+      const colors = ['#ff4b6e', '#ff9a9e', '#ffb6c1', '#fff0f5', '#ff69b4'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function createConfetti() {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height - canvas.height;
+      const size = Math.random() * 10 + 5;
+      const color = randomColor();
+      const speed = Math.random() * 3 + 2;
+      confettis.push({ x, y, size, color, speed });
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettis.forEach((confetti, index) => {
+        ctx.beginPath();
+        ctx.arc(confetti.x, confetti.y, confetti.size, 0, Math.PI * 2);
+        ctx.fillStyle = confetti.color;
+        ctx.fill();
+        confetti.y += confetti.speed;
+        if (confetti.y > canvas.height) confettis.splice(index, 1);
+      });
+    }
+
+    function loopConfetti() {
+      drawConfetti();
+      requestAnimationFrame(loopConfetti);
+    }
+
+    confettiButton.addEventListener('click', () => {
+      for (let i = 0; i < 150; i++) createConfetti();
+      const msg = [
+        "A smile suits you better than anger 😌",
+        "Let's make up? ☕",
+        "I promise no drama today 💖",
+        "You're my favorite human 💫"
+      ];
+      confettiButton.textContent = msg[Math.floor(Math.random() * msg.length)];
+    });
+
+    loopConfetti();
+
+    // Floating hearts
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.backgroundColor = randomColor();
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }, 500);
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
